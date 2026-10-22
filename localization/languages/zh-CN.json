@@ -75,7 +75,7 @@
     /* navbar appearance controls */
     "grayscaleMode": "黑白模式",
     "pageBackgroundTransparent": "背景透出桌面（对新开的窗口生效）",
-    "windowOpacity": "窗口不透明度",
+    "windowOpacity": "窗口不透明度（只影响当前窗口）",
     /* task overlay */
     "viewTasks": "查看标签组",
     "newTask": "新建标签组", //"new" is a verb - it is used for a button at the bottom of the task overlay

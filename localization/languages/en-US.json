@@ -75,7 +75,7 @@
     /* navbar appearance controls */
     "grayscaleMode": "Grayscale",
     "pageBackgroundTransparent": "Show desktop through page background (applies to new windows)",
-    "windowOpacity": "Window opacity",
+    "windowOpacity": "Window opacity (this window only)",
     /* task overlay */
     "viewTasks": "View Tasks",
     "newTask": "New Task", //"new" is a verb - it is used for a button at the bottom of the task overlay

@@ -197,6 +197,11 @@ function createWindowWithBounds (bounds, customArgs) {
   */
   const transparentWindow = pageBackgroundIsTransparent()
 
+  // a window opened from another one starts at that window's opacity; the first window uses the setting
+  const windowOpacity = typeof customArgs.windowOpacity === 'number'
+    ? customArgs.windowOpacity
+    : (typeof settings.get('windowOpacity') === 'number' ? settings.get('windowOpacity') : 1)
+
   const newWin = new BaseWindow({
     width: bounds.width,
     height: bounds.height,
@@ -209,7 +214,7 @@ function createWindowWithBounds (bounds, customArgs) {
     icon: __dirname + '/icons/icon256.png',
     frame: settings.get('useSeparateTitlebar'),
     alwaysOnTop: getAlwaysOnTop(),
-    opacity: getWindowOpacity(),
+    opacity: windowOpacity,
     transparent: transparentWindow,
     backgroundColor: transparentWindow ? '#00000000' : '#fff', // the opaque value is ignored, but setting it seems to work around https://github.com/electron/electron/issues/10559
   })
@@ -235,6 +240,7 @@ function createWindowWithBounds (bounds, customArgs) {
         '--window-id=' + windows.nextId,
         '--page-background-transparent-capable=' + pageBackgroundIsCapable(),
         '--page-background-transparent=' + transparentWindow,
+        '--window-opacity=' + windowOpacity,
         ...((windows.getAll().length === 0 ? ['--initial-window'] : [])),
         ...(windows.hasEverCreatedWindow ? [] : ['--launch-window']),
         ...(customArgs.initialTask ? ['--initial-task=' + customArgs.initialTask] : [])
@@ -369,6 +375,7 @@ function createWindowWithBounds (bounds, customArgs) {
 
   windows.addWindow(newWin)
   windows.getState(newWin).pageBackgroundTransparent = transparentWindow
+  windows.getState(newWin).windowOpacity = windowOpacity
 
   return newWin
 }

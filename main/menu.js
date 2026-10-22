@@ -48,11 +48,12 @@ function buildAppMenu (options = {}) {
     {
       label: l('appMenuNewWindow'),
       accelerator: getFormattedKeyMapEntry('addWindow'),
-      click: function () {
+      click: function (item, window) {
         if (isFocusMode) {
           showFocusModeDialog2()
         } else {
-          createWindow()
+          // opacity can be changed live, so a new window starts from the window it was opened from
+          createWindow({ windowOpacity: getWindowOpacity(window) })
         }
       }
     }

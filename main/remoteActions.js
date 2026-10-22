@@ -108,5 +108,16 @@ ipc.handle('showItemInFolder', function (e, path) {
 })
 
 ipc.on('newWindow', function (e, customArgs) {
-  createWindow(customArgs)
+  createWindow(Object.assign({ windowOpacity: getWindowOpacity(windows.windowFromContents(e.sender).win) }, customArgs))
+})
+
+/*
+  Opacity belongs to one window only, so this applies to the window that asked. The setting is
+  written as well, but only as the value the first window of the next launch starts from.
+*/
+ipc.handle('setWindowOpacity', function (e, value) {
+  var win = windows.windowFromContents(e.sender).win
+
+  applyWindowOpacity(win, value)
+  settings.set('windowOpacity', value)
 })

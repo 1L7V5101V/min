@@ -1,25 +1,22 @@
-var settings = require('util/settings/settings.js')
+var ipcRenderer = require('electron').ipcRenderer
 
 var slider = document.getElementById('opacity-slider')
 
 function initialize () {
   if (window.platformType === 'linux') {
-    // the main process ignores windowOpacity on Linux, so there is nothing to control here
+    // the main process ignores opacity on Linux, so there is nothing to control here
     slider.hidden = true
     return
   }
 
-  settings.listen('windowOpacity', function (value) {
-    var percent = Math.round((typeof value === 'number' ? value : 1) * 100)
+  var value = parseFloat(window.globalArgs['window-opacity'])
 
-    // skip the write while the user is dragging, so the thumb doesn't jump under the pointer
-    if (document.activeElement !== slider && parseInt(slider.value) !== percent) {
-      slider.value = percent
-    }
-  })
+  // this window's own value, which the main process hands over at startup; the shared setting is
+  // only what the first window of the next launch starts from
+  slider.value = Math.round((isNaN(value) ? 1 : value) * 100)
 
   slider.addEventListener('input', function () {
-    settings.set('windowOpacity', parseInt(this.value) / 100)
+    ipcRenderer.invoke('setWindowOpacity', parseInt(this.value) / 100)
   })
 }
 
