@@ -232,7 +232,7 @@
     "appMenuWindow": "Window",
     "appMenuMinimize": "Minimize",
     "appMenuClose": "Close",
-    "appMenuAlwaysOnTop": "Always on Top",
+    "appMenuAlwaysOnTop": "Always on Top (this window only)",
     "appMenuHelp": "Help",
     "appMenuKeyboardShortcuts": "Keyboard Shortcuts",
     "appMenuReportBug": "Report a Bug",

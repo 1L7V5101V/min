@@ -1,15 +1,18 @@
-var settings = require('util/settings/settings.js')
+var ipcRenderer = require('electron').ipcRenderer
 
 var button = document.getElementById('always-on-top-toggle-button')
 
 function initialize () {
   button.addEventListener('click', function () {
-    settings.set('windowAlwaysOnTop', !(settings.get('windowAlwaysOnTop') === true))
+    var onTop = button.getAttribute('aria-pressed') !== 'true'
+
+    button.setAttribute('aria-pressed', String(onTop))
+    ipcRenderer.invoke('setWindowAlwaysOnTop', onTop)
   })
 
-  settings.listen('windowAlwaysOnTop', function (value) {
-    button.setAttribute('aria-pressed', String(value === true))
-  })
+  // this window's own value, handed over at startup; the shared setting is only what the next
+  // launch's first window starts from
+  button.setAttribute('aria-pressed', String(window.globalArgs['window-always-on-top'] === 'true'))
 }
 
 module.exports = { initialize }

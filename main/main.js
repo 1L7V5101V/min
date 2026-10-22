@@ -202,6 +202,14 @@ function createWindowWithBounds (bounds, customArgs) {
     ? customArgs.windowOpacity
     : (typeof settings.get('windowOpacity') === 'number' ? settings.get('windowOpacity') : 1)
 
+  /*
+    Same for always-on-top: it's a window property, so pinning one window leaves the others alone.
+    Read per window because the setting only says what the next launch should start with.
+  */
+  const alwaysOnTopWindow = typeof customArgs.windowAlwaysOnTop === 'boolean'
+    ? customArgs.windowAlwaysOnTop
+    : settings.get('windowAlwaysOnTop') === true
+
   const newWin = new BaseWindow({
     width: bounds.width,
     height: bounds.height,
@@ -213,7 +221,7 @@ function createWindowWithBounds (bounds, customArgs) {
     trafficLightPosition: { x: 12, y: 10 },
     icon: __dirname + '/icons/icon256.png',
     frame: settings.get('useSeparateTitlebar'),
-    alwaysOnTop: getAlwaysOnTop(),
+    alwaysOnTop: alwaysOnTopWindow,
     opacity: windowOpacity,
     transparent: transparentWindow,
     backgroundColor: transparentWindow ? '#00000000' : '#fff', // the opaque value is ignored, but setting it seems to work around https://github.com/electron/electron/issues/10559
@@ -241,6 +249,7 @@ function createWindowWithBounds (bounds, customArgs) {
         '--page-background-transparent-capable=' + pageBackgroundIsCapable(),
         '--page-background-transparent=' + transparentWindow,
         '--window-opacity=' + windowOpacity,
+        '--window-always-on-top=' + alwaysOnTopWindow,
         ...((windows.getAll().length === 0 ? ['--initial-window'] : [])),
         ...(windows.hasEverCreatedWindow ? [] : ['--launch-window']),
         ...(customArgs.initialTask ? ['--initial-task=' + customArgs.initialTask] : [])
@@ -376,6 +385,7 @@ function createWindowWithBounds (bounds, customArgs) {
   windows.addWindow(newWin)
   windows.getState(newWin).pageBackgroundTransparent = transparentWindow
   windows.getState(newWin).windowOpacity = windowOpacity
+  windows.getState(newWin).windowAlwaysOnTop = alwaysOnTopWindow
 
   return newWin
 }
@@ -463,9 +473,10 @@ ipc.on('focusMainWebContents', function () {
 })
 
 ipc.on('showSecondaryMenu', function (event, data) {
-  if (!secondaryMenu) {
-    secondaryMenu = buildAppMenu({ secondary: true })
-  }
+  // built every time rather than cached: the checkbox items read the state of the window the menu
+  // is opened from, and a cached menu would keep showing the previous window's state
+  secondaryMenu = buildAppMenu({ secondary: true })
+
   secondaryMenu.popup({
     x: data.x,
     y: data.y

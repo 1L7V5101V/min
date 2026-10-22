@@ -108,7 +108,23 @@ ipc.handle('showItemInFolder', function (e, path) {
 })
 
 ipc.on('newWindow', function (e, customArgs) {
-  createWindow(Object.assign({ windowOpacity: getWindowOpacity(windows.windowFromContents(e.sender).win) }, customArgs))
+  var sourceWin = windows.windowFromContents(e.sender).win
+
+  createWindow(Object.assign({
+    windowOpacity: getWindowOpacity(sourceWin),
+    windowAlwaysOnTop: getWindowAlwaysOnTop(sourceWin)
+  }, customArgs))
+})
+
+/*
+  Always-on-top belongs to one window, so this applies to the window that asked. The setting is
+  written as well, but only as the value the first window of the next launch starts from.
+*/
+ipc.handle('setWindowAlwaysOnTop', function (e, value) {
+  var win = windows.windowFromContents(e.sender).win
+
+  applyWindowAlwaysOnTop(win, value)
+  settings.set('windowAlwaysOnTop', value)
 })
 
 /*
