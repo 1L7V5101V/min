@@ -48,13 +48,11 @@ function buildAppMenu (options = {}) {
     {
       label: l('appMenuNewWindow'),
       accelerator: getFormattedKeyMapEntry('addWindow'),
-      click: function (item, window) {
+      click: function () {
         if (isFocusMode) {
           showFocusModeDialog2()
         } else {
-          // transparency is fixed when a window is created, so a new window takes the state of the
-          // window it was opened from rather than the app-wide setting
-          createWindow({ pageBackgroundTransparent: windowIsTransparent(window) })
+          createWindow()
         }
       }
     }

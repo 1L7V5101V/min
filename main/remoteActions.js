@@ -108,12 +108,5 @@ ipc.handle('showItemInFolder', function (e, path) {
 })
 
 ipc.on('newWindow', function (e, customArgs) {
-  /*
-    A window opened from another one inherits that window's transparency, because the value can't
-    be changed after the window exists. An explicit request from the caller still wins.
-  */
-  createWindow(Object.assign(
-    { pageBackgroundTransparent: windowIsTransparent(windows.windowFromContents(e.sender).win) },
-    customArgs
-  ))
+  createWindow(customArgs)
 })

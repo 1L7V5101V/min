@@ -191,13 +191,11 @@ function createWindow (customArgs = {}) {
 
 function createWindowWithBounds (bounds, customArgs) {
   /*
-    transparent can't be changed after the window exists, so each window carries the value it was
-    created with: a window opened from another one inherits that one's state, and anything else
-    (startup, opening a link in a new window) falls back to the app-wide setting.
+    Read once per window, because transparent can't be changed after the window exists and the
+    button can be flipped in between: each window keeps the value it was created with, so one
+    window can be transparent while another in the same process isn't.
   */
-  const transparentWindow = typeof customArgs.pageBackgroundTransparent === 'boolean'
-    ? customArgs.pageBackgroundTransparent
-    : pageBackgroundIsTransparent()
+  const transparentWindow = pageBackgroundIsTransparent()
 
   const newWin = new BaseWindow({
     width: bounds.width,
