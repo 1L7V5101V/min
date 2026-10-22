@@ -311,6 +311,14 @@ body.windows.dark-theme .navbar-action-button:not(:disabled):hover {
   font-size: 1.6em !important;
 }
 
+#opacity-slider {
+  width: 5em;
+  margin: 0 0.75em;
+  vertical-align: middle;
+  accent-color: var(--theme-foreground-color, grey);
+  cursor: pointer;
+}
+
 /* audio button */
 .tab-item .tab-audio-button {
   vertical-align: text-bottom;

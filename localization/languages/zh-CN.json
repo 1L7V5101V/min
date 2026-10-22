@@ -72,6 +72,8 @@
     "searchbarPlaceholder": "输入搜索内容或网站地址",
     "privateTab": "隐私标签页",
     "newTabAction": "新建标签页", //this is a verb, used to label a button that adds a tab to the tabstrip when clicked
+    /* navbar appearance controls */
+    "windowOpacity": "窗口不透明度",
     /* task overlay */
     "viewTasks": "查看标签组",
     "newTask": "新建标签组", //"new" is a verb - it is used for a button at the bottom of the task overlay

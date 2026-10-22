@@ -72,6 +72,8 @@
     "searchbarPlaceholder": "Search or enter address",
     "privateTab": "Private tab",
     "newTabAction": "New Tab", //this is a verb, used to label a button that adds a tab to the tabstrip when clicked
+    /* navbar appearance controls */
+    "windowOpacity": "Window opacity",
     /* task overlay */
     "viewTasks": "View Tasks",
     "newTask": "New Task", //"new" is a verb - it is used for a button at the bottom of the task overlay
