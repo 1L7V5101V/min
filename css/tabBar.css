@@ -303,6 +303,8 @@ body.windows.dark-theme .navbar-action-button:not(:disabled):hover {
 }
 .navbar-right-actions {
   margin-right: 2.3em;
+  display: flex;
+  align-items: center;
 }
 
 .navbar-right-actions #add-tab-button {
@@ -313,10 +315,15 @@ body.windows.dark-theme .navbar-action-button:not(:disabled):hover {
 
 #opacity-slider {
   width: 5em;
-  margin: 0 0.75em;
-  vertical-align: middle;
+  margin: 0 0.5em;
   accent-color: var(--theme-foreground-color, grey);
   cursor: pointer;
+}
+
+/* the toggles sit beside the 36px add button, so they take the same footprint */
+.navbar-right-actions .navbar-action-button[aria-pressed] {
+  padding: 0;
+  width: 36px;
 }
 
 .navbar-action-button[aria-pressed='true'] {
