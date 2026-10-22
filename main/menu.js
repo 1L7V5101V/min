@@ -99,6 +99,18 @@ function buildAppMenu (options = {}) {
     }
   }
 
+  var alwaysOnTopAction = {
+    label: l('appMenuAlwaysOnTop'),
+    type: 'checkbox',
+    checked: settings.get('windowAlwaysOnTop') || false,
+    click: function (item, window) {
+      windows.getAll().forEach(function (win) {
+        win.setAlwaysOnTop(item.checked)
+      })
+      settings.set('windowAlwaysOnTop', item.checked)
+    }
+  }
+
   var template = [
     ...(options.secondary ? tabTaskActions : []),
     ...(options.secondary ? [{ type: 'separator' }] : []),
@@ -311,7 +323,9 @@ function buildAppMenu (options = {}) {
             if (process.platform == 'darwin') { return 'Ctrl+Command+F' } else { return 'F11' }
           })(),
           role: 'togglefullscreen'
-        }
+        },
+        // macOS exposes this in the Window menu instead
+        ...(process.platform === 'darwin' ? [] : [{ type: 'separator' }, alwaysOnTopAction])
       ]
     },
     {
@@ -394,17 +408,7 @@ function buildAppMenu (options = {}) {
             // otherwise, this event will be handled in the main window
             }
           },
-          {
-            label: l('appMenuAlwaysOnTop'),
-            type: 'checkbox',
-            checked: settings.get('windowAlwaysOnTop') || false,
-            click: function (item, window) {
-              windows.getAll().forEach(function(win) {
-                win.setAlwaysOnTop(item.checked)
-              })
-              settings.set('windowAlwaysOnTop', item.checked)
-            }
-          },
+          alwaysOnTopAction,
           {
             type: 'separator'
           },
