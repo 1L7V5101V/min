@@ -274,6 +274,12 @@ function setView (id, senderContents) {
     win.getContentView().children.slice(1).forEach(child => win.getContentView().removeChildView(child))
     if (viewStateMap[id].loadedInitialURL) {
       win.getContentView().addChildView(viewMap[id])
+      /*
+        Re-attaching a view gives it a fresh surface. Without re-applying the colour a transparent
+        window shows the page on an opaque sheet, so the desktop stops showing through as soon as
+        you switch tabs or open the menu.
+      */
+      viewMap[id].setBackgroundColor(transparentBackgroundColour())
     } else {
       win.getContentView().removeChildView(viewMap[id])
     }
