@@ -98,8 +98,15 @@ body.linux #menu-button {
 }
 
 .tab-item {
-  flex: 1;
-  min-width: 125px;
+  /*
+    Width follows the title instead of sharing the strip out: flex: 1 made every tab an equal slice
+    of the bar, so one tab with a four character title still measured the full 744px. The title has
+    to stop being absolutely positioned for this to work, since an out-of-flow element contributes no
+    width of its own.
+  */
+  flex: 0 1 auto;
+  min-width: 5rem;
+  max-width: 16rem;
   transition: 0.2s transform;
   line-height: 36px;
   height: 36px;
@@ -111,9 +118,6 @@ body.linux #menu-button {
   gap: 0.5rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-}
-.tab-item.active {
-  min-width: 168px;
 }
 .tab-item.gu-mirror {
   top: var(--control-space-top) !important;
@@ -244,6 +248,8 @@ body:not(.touch)
   padding-left: 0.25rem;
   padding-right: 0.25rem;
   flex: 1;
+  /* without this the container can't shrink back down once the tab hits its max-width */
+  min-width: 0;
   overflow: hidden;
 }
 .compact-tabs .tab-item .title {
@@ -251,8 +257,10 @@ body:not(.touch)
 }
 .tab-item .title {
   display: block;
-  position: absolute;
-  top: 0;
+  /* in flow, so the text is what sets the tab's width; the hover animation only uses transforms */
+  position: static;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 15px;
   transform-origin: left 10%;
   transition: 0.15s transform;
