@@ -319,7 +319,7 @@ body.windows.dark-theme .navbar-action-button:not(:disabled):hover {
   cursor: pointer;
 }
 
-#grayscale-toggle-button[aria-pressed='true'] {
+.navbar-action-button[aria-pressed='true'] {
   border-radius: 0.25em;
   background-color: color-mix(in srgb, var(--theme-foreground-color, grey) 22%, transparent);
 }
