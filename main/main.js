@@ -203,7 +203,8 @@ function createWindowWithBounds (bounds, customArgs) {
     frame: settings.get('useSeparateTitlebar'),
     alwaysOnTop: getAlwaysOnTop(),
     opacity: getWindowOpacity(),
-    backgroundColor: '#fff', // the value of this is ignored, but setting it seems to work around https://github.com/electron/electron/issues/10559
+    transparent: pageBackgroundIsTransparent(),
+    backgroundColor: transparentBackgroundColour(), // the opaque value is ignored, but setting it seems to work around https://github.com/electron/electron/issues/10559
   })
 
   // windows and linux always use a menu button in the upper-left corner instead
@@ -223,12 +224,19 @@ function createWindowWithBounds (bounds, customArgs) {
         '--app-name=' + app.getName(),
         ...((isDevelopmentMode ? ['--development-mode'] : [])),
         '--window-id=' + windows.nextId,
+        '--page-background-transparent-capable=' + pageBackgroundIsCapable(),
+        '--page-background-transparent=' + pageBackgroundIsTransparent(),
         ...((windows.getAll().length === 0 ? ['--initial-window'] : [])),
         ...(windows.hasEverCreatedWindow ? [] : ['--launch-window']),
         ...(customArgs.initialTask ? ['--initial-task=' + customArgs.initialTask] : [])
       ]
     }
   })
+  if (pageBackgroundIsTransparent()) {
+    // the chrome covers the whole window, so an opaque sheet here would hide the desktop again
+    mainView.setBackgroundColor('#00000000')
+  }
+
   mainView.webContents.loadURL(browserPage)
 
   if (bounds.maximized) {

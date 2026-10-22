@@ -47,6 +47,15 @@ body.grayscale-mode {
   filter: grayscale(1);
 }
 
+/*
+  The chrome view covers the whole window, so an opaque body here would hide the desktop again.
+  The navbar paints itself and keeps its own background.
+*/
+html:has(body.page-background-transparent),
+html:has(body.page-background-transparent) body {
+  background-color: transparent;
+}
+
 h1,
 h2,
 h3 {

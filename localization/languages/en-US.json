@@ -74,6 +74,7 @@
     "newTabAction": "New Tab", //this is a verb, used to label a button that adds a tab to the tabstrip when clicked
     /* navbar appearance controls */
     "grayscaleMode": "Grayscale",
+    "pageBackgroundTransparent": "Show desktop through page background (restart to apply)",
     "windowOpacity": "Window opacity",
     /* task overlay */
     "viewTasks": "View Tasks",

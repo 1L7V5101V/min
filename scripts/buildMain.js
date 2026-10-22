@@ -25,7 +25,8 @@ const modules = [
   'js/util/proxy.js',
   'main/themeMain.js',
   'main/opacityMain.js',
-  'main/alwaysOnTopMain.js'
+  'main/alwaysOnTopMain.js',
+  'main/pageTransparencyMain.js'
 ]
 
 function buildMain () {

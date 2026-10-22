@@ -47,7 +47,7 @@ function createView (existingViewId, id, webPreferences, boundsString, events) {
     delete temporaryPopupViews[existingViewId]
 
     // the initial URL has already been loaded, so set the background color
-    view.setBackgroundColor('#fff')
+    view.setBackgroundColor(transparentBackgroundColour())
     viewStateMap[id].loadedInitialURL = true
   } else {
     view = new WebContentsView({ webPreferences: viewPrefs })
@@ -368,7 +368,7 @@ function loadURLInView (id, url, win) {
   if (!viewStateMap[id].loadedInitialURL) {
     // Give the site a chance to display something before setting the background, in case it has its own dark theme
     viewMap[id].webContents.once('dom-ready', function() {
-      viewMap[id].setBackgroundColor('#fff')
+      viewMap[id].setBackgroundColor(transparentBackgroundColour())
     })
     // If the view has no URL, it won't be attached yet
     if (win && id === windows.getState(win).selectedView) {
