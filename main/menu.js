@@ -102,11 +102,8 @@ function buildAppMenu (options = {}) {
   var alwaysOnTopAction = {
     label: l('appMenuAlwaysOnTop'),
     type: 'checkbox',
-    checked: settings.get('windowAlwaysOnTop') || false,
+    checked: getAlwaysOnTop(),
     click: function (item, window) {
-      windows.getAll().forEach(function (win) {
-        win.setAlwaysOnTop(item.checked)
-      })
       settings.set('windowAlwaysOnTop', item.checked)
     }
   }

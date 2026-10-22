@@ -201,7 +201,7 @@ function createWindowWithBounds (bounds, customArgs) {
     trafficLightPosition: { x: 12, y: 10 },
     icon: __dirname + '/icons/icon256.png',
     frame: settings.get('useSeparateTitlebar'),
-    alwaysOnTop: settings.get('windowAlwaysOnTop'),
+    alwaysOnTop: getAlwaysOnTop(),
     opacity: getWindowOpacity(),
     backgroundColor: '#fff', // the value of this is ignored, but setting it seems to work around https://github.com/electron/electron/issues/10559
   })

@@ -24,7 +24,8 @@ const modules = [
   'main/keychainService.js',
   'js/util/proxy.js',
   'main/themeMain.js',
-  'main/opacityMain.js'
+  'main/opacityMain.js',
+  'main/alwaysOnTopMain.js'
 ]
 
 function buildMain () {
