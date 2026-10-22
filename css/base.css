@@ -81,12 +81,14 @@ body.page-background-transparent::after {
 
 /*
   The 12px band above the tab strip is the drag handle on Windows and Linux. Losing its fill makes
-  it invisible, so it keeps an outline here: the band stays see-through but you can still see where
-  to grab the window.
+  it invisible, so it keeps a line here: the band stays see-through but you can still see where to
+  grab the window. Only the bottom edge is drawn, because the window frame above already supplies
+  the top and both sides, and drawing them again would land 1px inside that line and read as a
+  thick border.
 */
 body.page-background-transparent .window-drag-area {
   box-sizing: border-box;
-  border: 1px solid #000;
+  border-bottom: 1px solid #000;
 }
 
 h1,
