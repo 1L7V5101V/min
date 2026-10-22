@@ -33,6 +33,13 @@ function initialize () {
   if (inEffect) {
     document.body.classList.add('page-background-transparent')
 
+    /*
+      The chrome draws its frame 2px inside the window, so the tab view has to stop before it. Two
+      CSS pixels isn't enough at fractional scaling (1px lands on 1.08 device pixels and the
+      rounding eats it), so the inset is 4.
+    */
+    webviews.adjustMargin([0, 4, 4, 4])
+
     pageSheet.setWanted(true)
     webviews.bindEvent('dom-ready', pageSheet.onDocumentReady)
     pageSheet.applyToAllTabs()

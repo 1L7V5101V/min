@@ -49,11 +49,44 @@ body.grayscale-mode {
 
 /*
   The chrome view covers the whole window, so an opaque body here would hide the desktop again.
-  The navbar paints itself and keeps its own background.
+  In this mode nothing in the chrome keeps a fill: only text, and the hairline below, are painted.
 */
 html:has(body.page-background-transparent),
 html:has(body.page-background-transparent) body {
   background-color: transparent;
+}
+
+body.page-background-transparent,
+body.page-background-transparent *,
+body.page-background-transparent *::before,
+body.page-background-transparent *::after {
+  background-color: transparent !important;
+}
+
+/*
+  A window with no panels has no visible edge, so the frame is drawn here instead. It sits 2px
+  inside the window rather than on the last pixel: the chrome view ends up a fraction of a device
+  pixel taller than the window once display scaling rounds (684 CSS px at 108% is 738.7), and a
+  line on the bottom row gets clipped by that fraction. The tab view is inset past this line on
+  three sides so page content doesn't cover it (see pageTransparencyMode.js).
+*/
+body.page-background-transparent::after {
+  content: "";
+  position: fixed;
+  inset: 2px;
+  border: 1px solid #000;
+  pointer-events: none;
+  z-index: 100000;
+}
+
+/*
+  The 12px band above the tab strip is the drag handle on Windows and Linux. Losing its fill makes
+  it invisible, so it keeps an outline here: the band stays see-through but you can still see where
+  to grab the window.
+*/
+body.page-background-transparent .window-drag-area {
+  box-sizing: border-box;
+  border: 1px solid #000;
 }
 
 h1,
