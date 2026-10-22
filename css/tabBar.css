@@ -326,9 +326,12 @@ body.windows.dark-theme .navbar-action-button:not(:disabled):hover {
   width: 36px;
 }
 
-.navbar-action-button[aria-pressed='true'] {
-  border-radius: 0.25em;
-  background-color: color-mix(in srgb, var(--theme-foreground-color, grey) 22%, transparent);
+/*
+  The pressed state can't be a fill: transparent mode removes every background colour, so a filled
+  highlight goes invisible exactly when you need it. Half-drawn when off, solid when on.
+*/
+.navbar-right-actions .navbar-action-button[aria-pressed='false'] {
+  opacity: 0.4;
 }
 
 /* audio button */
