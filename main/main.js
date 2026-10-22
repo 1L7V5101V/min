@@ -190,6 +190,15 @@ function createWindow (customArgs = {}) {
 }
 
 function createWindowWithBounds (bounds, customArgs) {
+  /*
+    transparent can't be changed after the window exists, so each window carries the value it was
+    created with: a window opened from another one inherits that one's state, and anything else
+    (startup, opening a link in a new window) falls back to the app-wide setting.
+  */
+  const transparentWindow = typeof customArgs.pageBackgroundTransparent === 'boolean'
+    ? customArgs.pageBackgroundTransparent
+    : pageBackgroundIsTransparent()
+
   const newWin = new BaseWindow({
     width: bounds.width,
     height: bounds.height,
@@ -203,11 +212,11 @@ function createWindowWithBounds (bounds, customArgs) {
     frame: settings.get('useSeparateTitlebar'),
     alwaysOnTop: getAlwaysOnTop(),
     opacity: getWindowOpacity(),
-    transparent: pageBackgroundIsTransparent(),
-    backgroundColor: transparentBackgroundColour(), // the opaque value is ignored, but setting it seems to work around https://github.com/electron/electron/issues/10559
+    transparent: transparentWindow,
+    backgroundColor: transparentWindow ? '#00000000' : '#fff', // the opaque value is ignored, but setting it seems to work around https://github.com/electron/electron/issues/10559
   })
 
-  trackMaximizeState(newWin)
+  trackMaximizeState(newWin, transparentWindow)
 
   // windows and linux always use a menu button in the upper-left corner instead
   // if frame: false is set, this won't have any effect, but it does apply on Linux if "use separate titlebar" is enabled
@@ -227,14 +236,14 @@ function createWindowWithBounds (bounds, customArgs) {
         ...((isDevelopmentMode ? ['--development-mode'] : [])),
         '--window-id=' + windows.nextId,
         '--page-background-transparent-capable=' + pageBackgroundIsCapable(),
-        '--page-background-transparent=' + pageBackgroundIsTransparent(),
+        '--page-background-transparent=' + transparentWindow,
         ...((windows.getAll().length === 0 ? ['--initial-window'] : [])),
         ...(windows.hasEverCreatedWindow ? [] : ['--launch-window']),
         ...(customArgs.initialTask ? ['--initial-task=' + customArgs.initialTask] : [])
       ]
     }
   })
-  if (pageBackgroundIsTransparent()) {
+  if (transparentWindow) {
     // the chrome covers the whole window, so an opaque sheet here would hide the desktop again
     mainView.setBackgroundColor('#00000000')
   }
@@ -361,6 +370,7 @@ function createWindowWithBounds (bounds, customArgs) {
   newWin.setTouchBar(buildTouchBar())
 
   windows.addWindow(newWin)
+  windows.getState(newWin).pageBackgroundTransparent = transparentWindow
 
   return newWin
 }

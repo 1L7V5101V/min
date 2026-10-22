@@ -29,7 +29,7 @@ function getDefaultViewWebPreferences () {
   )
 }
 
-function createView (existingViewId, id, webPreferences, boundsString, events) {
+function createView (existingViewId, id, webPreferences, boundsString, events, win) {
   if (viewStateMap[id]) {
     console.warn("Creating duplicate view")
   }
@@ -47,7 +47,7 @@ function createView (existingViewId, id, webPreferences, boundsString, events) {
     delete temporaryPopupViews[existingViewId]
 
     // the initial URL has already been loaded, so set the background color
-    view.setBackgroundColor(transparentBackgroundColour())
+    view.setBackgroundColor(viewBackgroundColour(win))
     viewStateMap[id].loadedInitialURL = true
   } else {
     view = new WebContentsView({ webPreferences: viewPrefs })
@@ -222,7 +222,7 @@ function createView (existingViewId, id, webPreferences, boundsString, events) {
           view.webContents.stop()
           const currentWindow = getWindowFromViewContents(view.webContents)
           destroyView(id)
-          const newView = createView(existingViewId, id, Object.assign({}, webPreferences, { javascript: shouldHaveJS }), boundsString, events)
+          const newView = createView(existingViewId, id, Object.assign({}, webPreferences, { javascript: shouldHaveJS }), boundsString, events, currentWindow)
           loadURLInView(id, event.url, currentWindow)
 
           if (currentWindow) {
@@ -277,9 +277,9 @@ function setView (id, senderContents) {
       /*
         Re-attaching a view gives it a fresh surface. Without re-applying the colour a transparent
         window shows the page on an opaque sheet, so the desktop stops showing through as soon as
-        you switch tabs or open the menu.
+        you switch tabs.
       */
-      viewMap[id].setBackgroundColor(transparentBackgroundColour())
+      viewMap[id].setBackgroundColor(viewBackgroundColour(win))
     } else {
       win.getContentView().removeChildView(viewMap[id])
     }
@@ -335,7 +335,7 @@ function getWindowFromViewContents (webContents) {
 }
 
 ipc.on('createView', function (e, args) {
-  createView(args.existingViewId, args.id, args.webPreferences, args.boundsString, args.events)
+  createView(args.existingViewId, args.id, args.webPreferences, args.boundsString, args.events, windows.windowFromContents(e.sender).win)
 })
 
 ipc.on('destroyView', function (e, id) {
@@ -374,7 +374,7 @@ function loadURLInView (id, url, win) {
   if (!viewStateMap[id].loadedInitialURL) {
     // Give the site a chance to display something before setting the background, in case it has its own dark theme
     viewMap[id].webContents.once('dom-ready', function() {
-      viewMap[id].setBackgroundColor(transparentBackgroundColour())
+      viewMap[id].setBackgroundColor(viewBackgroundColour(win))
     })
     // If the view has no URL, it won't be attached yet
     if (win && id === windows.getState(win).selectedView) {

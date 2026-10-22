@@ -16,9 +16,9 @@ function fillsWorkArea (bounds) {
     Math.abs(bounds.height - workArea.height) <= 2
 }
 
-function trackMaximizeState (win) {
+function trackMaximizeState (win, transparent) {
   var state = {
-    manual: pageBackgroundIsTransparent(),
+    manual: transparent,
     maximized: false,
     normalBounds: win.getBounds()
   }
