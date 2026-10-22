@@ -83,13 +83,13 @@ ipc.handle('minimize', function (e) {
 })
 
 ipc.handle('maximize', function (e) {
-  windows.windowFromContents(e.sender).win.maximize()
+  maximizeWindow(windows.windowFromContents(e.sender).win)
   // workaround for https://github.com/minbrowser/min/issues/1662
   e.sender.send('maximize')
 })
 
 ipc.handle('unmaximize', function (e) {
-  windows.windowFromContents(e.sender).win.unmaximize()
+  unmaximizeWindow(windows.windowFromContents(e.sender).win)
   // workaround for https://github.com/minbrowser/min/issues/1662
   e.sender.send('unmaximize')
 })

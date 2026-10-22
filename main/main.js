@@ -88,7 +88,7 @@ if (!isFirstInstance) {
 var saveWindowBounds = function () {
   if (windows.getCurrent()) {
     var bounds = Object.assign(windows.getCurrent().getBounds(), {
-      maximized: windows.getCurrent().isMaximized()
+      maximized: windowIsMaximized(windows.getCurrent())
     })
     fs.writeFileSync(path.join(userDataPath, 'windowBounds.json'), JSON.stringify(bounds))
   }
@@ -207,6 +207,8 @@ function createWindowWithBounds (bounds, customArgs) {
     backgroundColor: transparentBackgroundColour(), // the opaque value is ignored, but setting it seems to work around https://github.com/electron/electron/issues/10559
   })
 
+  trackMaximizeState(newWin)
+
   // windows and linux always use a menu button in the upper-left corner instead
   // if frame: false is set, this won't have any effect, but it does apply on Linux if "use separate titlebar" is enabled
   if (process.platform !== 'darwin') {
@@ -240,7 +242,7 @@ function createWindowWithBounds (bounds, customArgs) {
   mainView.webContents.loadURL(browserPage)
 
   if (bounds.maximized) {
-    newWin.maximize()
+    maximizeWindow(newWin)
 
     mainView.webContents.once('did-finish-load', function () {
       sendIPCToWindow(newWin, 'maximize')
