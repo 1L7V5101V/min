@@ -73,6 +73,7 @@
     "privateTab": "隐私标签页",
     "newTabAction": "新建标签页", //this is a verb, used to label a button that adds a tab to the tabstrip when clicked
     /* navbar appearance controls */
+    "grayscaleMode": "黑白模式",
     "windowOpacity": "窗口不透明度",
     /* task overlay */
     "viewTasks": "查看标签组",

@@ -42,6 +42,11 @@ body.dark-mode {
   color: lightgrey;
 }
 
+/* page content is grayed out through a stylesheet injected into the tab, this is the chrome half */
+body.grayscale-mode {
+  filter: grayscale(1);
+}
+
 h1,
 h2,
 h3 {
