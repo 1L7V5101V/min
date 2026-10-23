@@ -321,6 +321,25 @@ body.windows.dark-theme .navbar-action-button:not(:disabled):hover {
   font-size: 1.6em !important;
 }
 
+/*
+  The appearance controls live in their own strip at the bottom of the window. The tab view is a
+  native surface drawn above this document, so it has to be told to stop short of this strip;
+  js/navbar/appearanceBar.js measures this element and reserves exactly its height, so the height is
+  only written here.
+*/
+#appearance-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  z-index: 2;
+}
+
 #opacity-slider {
   width: 5em;
   margin: 0 0.5em;
@@ -328,8 +347,8 @@ body.windows.dark-theme .navbar-action-button:not(:disabled):hover {
   cursor: pointer;
 }
 
-/* the toggles sit beside the 36px add button, so they take the same footprint */
-.navbar-right-actions .navbar-action-button[aria-pressed] {
+/* the toggles keep the same 36px footprint as the rest of the chrome buttons */
+#appearance-bar .navbar-action-button[aria-pressed] {
   padding: 0;
   width: 36px;
 }
@@ -338,7 +357,7 @@ body.windows.dark-theme .navbar-action-button:not(:disabled):hover {
   The pressed state can't be a fill: transparent mode removes every background colour, so a filled
   highlight goes invisible exactly when you need it. Half-drawn when off, solid when on.
 */
-.navbar-right-actions .navbar-action-button[aria-pressed='false'] {
+#appearance-bar .navbar-action-button[aria-pressed='false'] {
   opacity: 0.4;
 }
 
