@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        overflow: hidden;
+        cursor: crosshair;
+        -webkit-user-select: none;
+      }
+
+      /*
+        The only thing drawn over the desktop is this outline: no dimming, no tint, so what the user
+        frames is what gets captured. It's hidden before the screen is grabbed, so it never ends up
+        inside the result either.
+      */
+      #selection {
+        position: fixed;
+        display: none;
+        border: 1px solid #00ffff;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="selection"></div>
+    <script src="screenCapture.js"></script>
+  </body>
+</html>

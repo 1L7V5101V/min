@@ -27,7 +27,8 @@ const modules = [
   'main/opacityMain.js',
   'main/alwaysOnTopMain.js',
   'main/pageTransparencyMain.js',
-  'main/maximizeMain.js'
+  'main/maximizeMain.js',
+  'main/screenCaptureMain.js'
 ]
 
 function buildMain () {

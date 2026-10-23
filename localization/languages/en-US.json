@@ -73,6 +73,7 @@
     "privateTab": "Private tab",
     "newTabAction": "New Tab", //this is a verb, used to label a button that adds a tab to the tabstrip when clicked
     /* navbar appearance controls */
+    "screenCapture": "Capture a region of the screen",
     "grayscaleMode": "Grayscale",
     "pageBackgroundTransparent": "Show desktop through page background (applies to new windows)",
     "windowOpacity": "Window opacity (this window only)",

@@ -73,6 +73,7 @@
     "privateTab": "隐私标签页",
     "newTabAction": "新建标签页", //this is a verb, used to label a button that adds a tab to the tabstrip when clicked
     /* navbar appearance controls */
+    "screenCapture": "框选屏幕截图",
     "grayscaleMode": "黑白模式",
     "pageBackgroundTransparent": "背景透出桌面（对新开的窗口生效）",
     "windowOpacity": "窗口不透明度（只影响当前窗口）",
